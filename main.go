@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/otz1/otz-back/cache"
-	"github.com/otz1/otz-back/controller"
+	"github.com/otz1/otz/cache"
+	"github.com/otz1/otz/controller"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )

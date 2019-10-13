@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/otz1/otz-back/api"
+	"github.com/otz1/otz/api"
 	"github.com/gin-gonic/gin"
 )
 

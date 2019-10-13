@@ -1,4 +1,4 @@
-# readme
+# otz [![Build Status](https://travis-ci.org/otz1/otz.svg?branch=master)](https://travis-ci.org/otz1/otz)
 how it works: scraper service will run periodically
 
 persistent database that stores keywords (search terms) and
