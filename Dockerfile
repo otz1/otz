@@ -1,0 +1,2 @@
+FROM go:alpine
+EXPOSE 8001
