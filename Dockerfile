@@ -1,2 +1,2 @@
-FROM go:alpine
+FROM golang:alpine
 EXPOSE 8001
