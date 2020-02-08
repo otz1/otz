@@ -32,7 +32,7 @@ func (ctx *Controller) Search(c *gin.Context) {
 	api.ProcessSearch(query)
 
 	results := []SearchResult{
-		SearchResult{"http://google.com/test"},
+		SearchResult{"http://google.com/"},
 	}
 	c.JSON(http.StatusOK, SearchResponse{
 		Query:   query,
