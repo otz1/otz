@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/otz1/otz/api"
 	"github.com/gin-gonic/gin"
+	"github.com/otz1/otz/api"
 )
 
 type SearchResult struct {
@@ -32,7 +32,7 @@ func (ctx *Controller) Search(c *gin.Context) {
 	api.ProcessSearch(query)
 
 	results := []SearchResult{
-		SearchResult{"http://google.com"},
+		SearchResult{"http://google.com/test"},
 	}
 	c.JSON(http.StatusOK, SearchResponse{
 		Query:   query,
