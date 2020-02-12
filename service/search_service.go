@@ -7,6 +7,10 @@ import (
 	"github.com/otz1/otz/entity"
 )
 
+const (
+	ResultsPerPage = 10
+)
+
 // SearchService ...
 type SearchService struct{}
 
@@ -28,18 +32,14 @@ func (s *SearchService) Search(query string) entity.SearchResponse {
 
 	pr.GetRanking(query)
 
-	results := []entity.SearchResult{
-		entity.SearchResult{
-			Title:           "title",
-			Snippet:         "this is a snippet from the webpage",
-			Ranking:         1,
-			ImageSource:     "http://placehold.it/256x256",
-			ThumbnailSource: "http://placehold.it/256x256",
-			Href:            "https://felixangell.com",
-		},
+	// TODO(Felix) - for now we fill with some dummy results.
+	results := []entity.SearchResult{}
+	for i := 0; i < 40; i++ {
+		results = append(results, buildResult())
 	}
 
 	elapsedTime := time.Now().Sub(startTime)
+	numPages := max(len(results)/ResultsPerPage, 1)
 
 	return entity.SearchResponse{
 		Query:   query,
@@ -48,6 +48,26 @@ func (s *SearchService) Search(query string) entity.SearchResponse {
 			ElapsedTime: elapsedTime,
 			ResultCount: len(results),
 		},
-		NumPages: 123,
+		NumPages: numPages,
 	}
+}
+
+func buildResult() entity.SearchResult {
+	return entity.SearchResult{
+		Title:           "title",
+		Snippet:         "this is a snippet from the webpage",
+		Ranking:         1,
+		ImageSource:     "http://placehold.it/256x256",
+		ThumbnailSource: "http://placehold.it/256x256",
+		Href:            "https://felixangell.com",
+	}
+}
+
+// go only has min and max for floats...
+// to avoid casting lets just delcare our own for now.
+func max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
 }
