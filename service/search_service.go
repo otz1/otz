@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/otz1/otz/conv"
 	"time"
 
 	"github.com/otz1/otz/client"
@@ -18,26 +19,26 @@ func NewSearchService() *SearchService {
 	return &SearchService{}
 }
 
+func timedEvent(evt func()) time.Duration {
+	startTime := time.Now()
+	evt()
+	return time.Now().Sub(startTime)
+}
+
 // Search ...
 func (s *SearchService) Search(query string) entity.SearchResponse {
-	startTime := time.Now()
+	var scraperResp *entity.ScrapeResponse
+	elapsedTime := timedEvent(func() {
+		scraperClient := client.NewScraperClient()
+		scraperResp = scraperClient.Scrape(query)
+	})
 
-	pr := client.NewPageRankerClient()
-
-	// check cache.
-	// fail -> check db for enough keywords. store them in db
-	// 			store them in cache.
-
-	// succ -> page rank
-
-	pr.GetRanking(query)
-
+	// perhaps we could move this.
 	var results []entity.SearchResult
-	for i := 0; i < 40; i++ {
-		results = append(results, buildResult())
+	for _, result := range scraperResp.Results {
+		results = append(results, conv.ToSearchResult(result))
 	}
 
-	elapsedTime := time.Now().Sub(startTime)
 	numPages := max(len(results)/ResultsPerPage, 1)
 
 	return entity.SearchResponse{
