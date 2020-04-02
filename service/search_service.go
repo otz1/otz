@@ -32,8 +32,7 @@ func (s *SearchService) Search(query string) entity.SearchResponse {
 
 	pr.GetRanking(query)
 
-	// TODO(Felix) - for now we fill with some dummy results.
-	results := []entity.SearchResult{}
+	var results []entity.SearchResult
 	for i := 0; i < 40; i++ {
 		results = append(results, buildResult())
 	}

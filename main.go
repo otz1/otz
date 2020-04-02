@@ -10,14 +10,11 @@ import (
 func main() {
 	ctrl := controller.New()
 	router := gin.Default()
-
 	{
 		conf := cors.Default()
 		router.Use(conf)
 	}
-
 	router.GET("/search", ctrl.Search)
-
 	router.Run(":8001")
 	cache.Close()
 }
