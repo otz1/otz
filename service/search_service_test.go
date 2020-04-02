@@ -40,6 +40,6 @@ func TestResultsPerPage(t *testing.T) {
 	// when we invoke the service
 	resp := ss.Search("hello, world")
 
-	assert.Equal(t, 40, resp.Measurements.ResultCount)
-	assert.Equal(t, 4, resp.NumPages)
+	numPages := max(len(resp.Results)/ResultsPerPage, 1)
+	assert.Equal(t, numPages, resp.NumPages)
 }
