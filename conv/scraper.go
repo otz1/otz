@@ -12,5 +12,6 @@ func ToSearchResult(scrapedResult entity.ScrapeResult) entity.SearchResult {
 	return entity.SearchResult{
 		Title: scrapedResult.Title,
 		Href: scrapedResult.Href,
+		Snippet: scrapedResult.Snippet,
 	}
 }

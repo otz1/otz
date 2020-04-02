@@ -8,6 +8,7 @@ type ScrapeRequest struct {
 type ScrapeResult struct {
 	Title string
 	Href string
+	Snippet string
 }
 
 type ScrapeResponse struct {
