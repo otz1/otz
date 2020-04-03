@@ -6,12 +6,12 @@ type ScrapeRequest struct {
 }
 
 type ScrapeResult struct {
-	Title string
-	Href string
-	Snippet string
+	Title string `json:"title"`
+	Href string`json:"href"`
+	Snippet string `json:"snippet"`
 }
 
 type ScrapeResponse struct {
-	OriginalQuery string
-	Results []ScrapeResult
+	OriginalQuery string`json:"originalQuery"`
+	Results []ScrapeResult`json:"results"`
 }
