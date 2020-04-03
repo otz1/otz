@@ -16,5 +16,5 @@ func (ctx *Controller) Search(c *gin.Context) {
 
 	ss := service.NewSearchService()
 	resp := ss.Search(query)
-	c.JSON(http.StatusOK, resp)
+	c.PureJSON(http.StatusOK, resp)
 }

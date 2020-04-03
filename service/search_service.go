@@ -24,7 +24,7 @@ func NewSearchService() *SearchService {
 func timedEvent(evt func()) time.Duration {
 	startTime := time.Now()
 	evt()
-	return time.Now().Sub(startTime) * time.Millisecond
+	return time.Now().Sub(startTime) / time.Millisecond
 }
 
 func extractSearchTerms(query string) []string {
@@ -49,10 +49,14 @@ func (s *SearchService) Search(query string) entity.SearchResponse {
 		scraperResp = scraperClient.Scrape(query)
 	})
 
+	searchTerms := extractSearchTerms(query)
+
 	// perhaps we could move this.
 	var results []entity.SearchResult
 	for _, result := range scraperResp.Results {
-		results = append(results, conv.ToSearchResult(result))
+		converted := conv.ToSearchResult(result)
+		emphasized := conv.EmphasizeSnippetSearchTerms(searchTerms, converted)
+		results = append(results, emphasized)
 	}
 
 	numPages := max(len(results)/ResultsPerPage, 1)
@@ -65,7 +69,7 @@ func (s *SearchService) Search(query string) entity.SearchResponse {
 			ResultCount: len(results),
 		},
 		NumPages: numPages,
-		SearchTerms: extractSearchTerms(query),
+		SearchTerms: searchTerms,
 	}
 }
 
