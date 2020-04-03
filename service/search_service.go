@@ -24,7 +24,7 @@ func NewSearchService() *SearchService {
 func timedEvent(evt func()) time.Duration {
 	startTime := time.Now()
 	evt()
-	return time.Now().Sub(startTime) * time.Millisecond
+	return time.Now().Sub(startTime) / time.Millisecond
 }
 
 func extractSearchTerms(query string) []string {
