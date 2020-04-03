@@ -6,4 +6,5 @@ type SearchResponse struct {
 	Results      []SearchResult    `json:"results"`
 	Measurements MeasurementDetail `json:"measurements"`
 	NumPages     int               `json:"numPages"`
+	SearchTerms []string `json:"searchTerms"`
 }

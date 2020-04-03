@@ -2,7 +2,9 @@ package service
 
 import (
 	"github.com/otz1/otz/conv"
+	"strings"
 	"time"
+	"unicode"
 
 	"github.com/otz1/otz/client"
 	"github.com/otz1/otz/entity"
@@ -23,6 +25,20 @@ func timedEvent(evt func()) time.Duration {
 	startTime := time.Now()
 	evt()
 	return time.Now().Sub(startTime)
+}
+
+func extractSearchTerms(query string) []string {
+	// naive algorithm, replace each non word character
+	// with a space, then we split the string by spaces.
+	// this allows the support of other languages rather than
+	// using a complex regular expr.
+	runes := []rune(query)
+	for i, ch := range runes {
+		if unicode.IsSymbol(ch) || unicode.IsPunct(ch) {
+			runes[i] = ' '
+		}
+	}
+	return strings.Fields(string(runes))
 }
 
 // Search ...
@@ -49,6 +65,7 @@ func (s *SearchService) Search(query string) entity.SearchResponse {
 			ResultCount: len(results),
 		},
 		NumPages: numPages,
+		SearchTerms: extractSearchTerms(query),
 	}
 }
 

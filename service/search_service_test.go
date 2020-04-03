@@ -43,3 +43,9 @@ func TestResultsPerPage(t *testing.T) {
 	numPages := max(len(resp.Results)/ResultsPerPage, 1)
 	assert.Equal(t, numPages, resp.NumPages)
 }
+
+func TestSearchTermsExtract(t *testing.T) {
+	input := "你好。 我叫菲利克斯。 你好吗？"
+	expected := []string{"你好", "我叫菲利克斯", "你好吗"}
+	assert.Equal(t, expected, extractSearchTerms(input))
+}
