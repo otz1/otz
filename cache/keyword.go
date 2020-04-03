@@ -3,6 +3,7 @@ package cache
 import (
 	"errors"
 	"fmt"
+	"github.com/getsentry/sentry-go"
 	"log"
 	"strconv"
 	"strings"
@@ -43,6 +44,7 @@ func delKeyword(keywords ...string) error {
 
 	err := redisDAO.Del(hashed...).Err()
 	if err != nil {
+		sentry.CaptureException(err)
 		log.Println(err)
 		return errors.New("failed to delete key")
 	}
@@ -52,12 +54,14 @@ func delKeyword(keywords ...string) error {
 func getKeyword(keyword string) (int64, error) {
 	val, err := redisDAO.Get(hash(keyword)).Result()
 	if err != nil {
+		sentry.CaptureException(err)
 		log.Println(err)
 		return 0, errors.New("faild to fetch key")
 	}
 
 	count, err := strconv.ParseInt(val, 10, 64)
 	if err != nil {
+		sentry.CaptureException(err)
 		log.Println(err)
 		return 0, errors.New("failed to parse count")
 	}
@@ -77,6 +81,7 @@ type Keyword struct {
 func AllKeywords() ([]Keyword, error) {
 	keys, err := redisDAO.Keys("kw:*").Result()
 	if err != nil {
+		sentry.CaptureException(err)
 		log.Println(err)
 		return []Keyword{}, errors.New("failed to get all keys")
 	}
@@ -85,11 +90,13 @@ func AllKeywords() ([]Keyword, error) {
 	for _, k := range keys {
 		val, err := redisDAO.Get(k).Result()
 		if err != nil {
+			sentry.CaptureException(err)
 			log.Println(err)
 			continue
 		}
 		count, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
+			sentry.CaptureException(err)
 			log.Println(err)
 			continue
 		}

@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"github.com/getsentry/sentry-go"
 	"log"
 	"os"
 
@@ -30,6 +31,7 @@ func Close() {
 	if redisDAO != nil {
 		err := redisDAO.Close()
 		if err != nil {
+			sentry.CaptureException(err)
 			log.Fatal(err)
 		}
 	}

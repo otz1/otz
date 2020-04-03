@@ -1,6 +1,7 @@
 package client
 
 import (
+	"github.com/getsentry/sentry-go"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/otz1/otz/entity"
 	"github.com/parnurzeal/gorequest"
@@ -16,11 +17,15 @@ func (s *ScraperClient) Scrape(query string) *entity.ScrapeResponse {
 
 	_, body, errs := gorequest.New().Post("https://otzs.otzaf.org/scrape").Send(scrapeRequest).End()
 	if len(errs) > 0 {
+		for _, err := range errs {
+			sentry.CaptureException(err)
+		}
 		panic(errs)
 	}
 
 	resp := &entity.ScrapeResponse{}
 	if err := jsoniter.Unmarshal([]byte(body), resp); err != nil {
+		sentry.CaptureException(err)
 		panic(err)
 	}
 	return resp
