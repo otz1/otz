@@ -18,6 +18,9 @@ func EmphasizeSnippetSearchTerms(searchTerms []string, sr entity.SearchResult) e
 
 	var replacementSet []string
 	for _, st := range searchTerms {
+		if len(st) < 2 {
+			continue
+		}
 		replacedWord := fmt.Sprintf("<span className='keyword'>%s</span>", st)
 		replacementSet = append(replacementSet, []string{
 			st, replacedWord,
