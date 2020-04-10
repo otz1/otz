@@ -15,7 +15,15 @@ func (s *ScraperClient) Scrape(query string) *entity.ScrapeResponse {
 		Source: "DDG",
 	}
 
-	_, body, errs := gorequest.New().Post("https://otzs.otzaf.org/scrape").Send(scrapeRequest).End()
+	_, body, errs := gorequest.
+		New().
+		Post("https://otzs.otzaf.org/scrape"). // TODO get from env variables.
+		AppendHeader("Content-Type", "application/json").
+		AppendHeader("Accept", "application/json").
+		AppendHeader("SITE-CODE", "OTZIT_UK"). // TODO deduce this rather than hardcode
+		Send(scrapeRequest).
+		End()
+
 	if len(errs) > 0 {
 		for _, err := range errs {
 			sentry.CaptureException(err)
