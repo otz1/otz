@@ -11,9 +11,9 @@ import (
 
 var scrapeEndpoint = map[string]string{
 	"prod":    "https://otzs.otzaf.org/scrape",
-	"staging": "http://otzs.qa.otzaf.org/scrape",
+	"staging": "https://otzs.qa.otzaf.org/scrape",
 	// local speaks to QA.
-	"local": "http://otzs.qa.otzaf.org/scrape",
+	"local": "https://otzs.qa.otzaf.org/scrape",
 }
 
 type ScraperClient struct{}
@@ -50,7 +50,7 @@ func (s *ScraperClient) Scrape(query string) *entity.ScrapeResponse {
 
 	resp := &entity.ScrapeResponse{}
 	if err := jsoniter.Unmarshal([]byte(body), resp); err != nil {
-		sentry.CaptureException(err)
+		sentry.CaptureException(fmt.Errorf("failed to unmarshal request to '%s' err '%v'", s.getEndpoint(), err))
 		panic(err)
 	}
 	return resp
