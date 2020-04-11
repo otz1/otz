@@ -54,13 +54,12 @@ func (s *SearchService) Search(query string) entity.SearchResponse {
 
 	searchTerms := extractSearchTerms(query)
 
-	// perhaps we could move this.
-	// and also we preallocate rather than allocate zero
-	var results []entity.SearchResult
-	for _, result := range scraperResp.Results {
+	// perhaps we could move this into a converter
+	results := make([]entity.SearchResult, len(scraperResp.Results))
+	for i, result := range scraperResp.Results {
 		converted := conv.ToSearchResult(result)
 		emphasized := conv.EmphasizeSnippetSearchTerms(searchTerms, converted)
-		results = append(results, emphasized)
+		results[i] = emphasized
 	}
 
 	numPages := max(len(results)/ResultsPerPage, 1)
