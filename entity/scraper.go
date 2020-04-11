@@ -1,8 +1,7 @@
 package entity
 
 type ScrapeRequest struct {
-	Query  string `json:"query"`
-	Source string `json:"source"`
+	Query string `json:"query"`
 }
 
 type ScrapeResult struct {

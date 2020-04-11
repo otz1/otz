@@ -11,8 +11,7 @@ type ScraperClient struct{}
 
 func (s *ScraperClient) Scrape(query string) *entity.ScrapeResponse {
 	scrapeRequest := entity.ScrapeRequest{
-		Query:  query,
-		Source: "DDG",
+		Query: query,
 	}
 
 	_, body, errs := gorequest.
