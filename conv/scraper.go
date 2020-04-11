@@ -43,8 +43,8 @@ func EmphasizeSnippetSearchTerms(searchTerms []string, sr entity.SearchResult) e
 func ToSearchResult(scrapedResult entity.ScrapeResult) entity.SearchResult {
 	// TODO finish the conversion!
 	return entity.SearchResult{
-		Title: scrapedResult.Title,
-		Href: scrapedResult.Href,
+		Title:   scrapedResult.Title,
+		Href:    scrapedResult.Href,
 		Snippet: scrapedResult.Snippet,
 	}
 }

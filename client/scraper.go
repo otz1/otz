@@ -7,11 +7,11 @@ import (
 	"github.com/parnurzeal/gorequest"
 )
 
-type ScraperClient struct {}
+type ScraperClient struct{}
 
 func (s *ScraperClient) Scrape(query string) *entity.ScrapeResponse {
-	scrapeRequest := entity.ScrapeRequest {
-		Query: query,
+	scrapeRequest := entity.ScrapeRequest{
+		Query:  query,
 		Source: "DDG",
 	}
 

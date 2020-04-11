@@ -15,10 +15,14 @@ const (
 )
 
 // SearchService ...
-type SearchService struct{}
+type SearchService struct {
+	scraperClient *client.ScraperClient
+}
 
 func NewSearchService() *SearchService {
-	return &SearchService{}
+	return &SearchService{
+		scraperClient: client.NewScraperClient(),
+	}
 }
 
 func timedEvent(evt func()) time.Duration {
@@ -45,13 +49,13 @@ func extractSearchTerms(query string) []string {
 func (s *SearchService) Search(query string) entity.SearchResponse {
 	var scraperResp *entity.ScrapeResponse
 	elapsedTime := timedEvent(func() {
-		scraperClient := client.NewScraperClient()
-		scraperResp = scraperClient.Scrape(query)
+		scraperResp = s.scraperClient.Scrape(query)
 	})
 
 	searchTerms := extractSearchTerms(query)
 
 	// perhaps we could move this.
+	// and also we preallocate rather than allocate zero
 	var results []entity.SearchResult
 	for _, result := range scraperResp.Results {
 		converted := conv.ToSearchResult(result)
@@ -68,24 +72,13 @@ func (s *SearchService) Search(query string) entity.SearchResponse {
 			ElapsedTime: elapsedTime,
 			ResultCount: len(results),
 		},
-		NumPages: numPages,
+		NumPages:    numPages,
 		SearchTerms: searchTerms,
 	}
 }
 
-func buildResult() entity.SearchResult {
-	return entity.SearchResult{
-		Title:           "title",
-		Snippet:         "this is a snippet from the webpage",
-		Ranking:         1,
-		ImageSource:     "http://placehold.it/256x256",
-		ThumbnailSource: "http://placehold.it/256x256",
-		Href:            "https://felixangell.com",
-	}
-}
-
 // go only has min and max for floats...
-// to avoid casting lets just delcare our own for now.
+// to avoid casting lets just declare our own for now.
 func max(x, y int) int {
 	if x > y {
 		return x
