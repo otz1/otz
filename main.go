@@ -27,9 +27,11 @@ func main() {
 		conf := cors.Default()
 		router.Use(conf)
 	}
-	router.GET("/loaderio-73c60d1d4b9c246fea73ca0bd0538c01.txt", func(c *gin.Context) {
-		c.String(http.StatusOK, "loaderio-73c60d1d4b9c246fea73ca0bd0538c01")
+	
+	router.GET("/loaderio-f9e388176893839315d3c6612a2739b0.txt", func(c *gin.Context) {
+		c.String(http.StatusOK, "loaderio-f9e388176893839315d3c6612a2739b0")
 	})
+
 	router.GET("/search", ctrl.Search)
 	router.Run(":8001")
 	cache.Close()
