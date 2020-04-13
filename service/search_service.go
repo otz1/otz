@@ -16,12 +16,12 @@ const (
 
 // SearchService ...
 type SearchService struct {
-	scraperClient *client.ScraperClient
+	scraperClient *client.PageRankerClient
 }
 
 func NewSearchService() *SearchService {
 	return &SearchService{
-		scraperClient: client.NewScraperClient(),
+		scraperClient: client.NewPageRankerClient(),
 	}
 }
 
@@ -47,16 +47,16 @@ func extractSearchTerms(query string) []string {
 
 // Search ...
 func (s *SearchService) Search(query string) entity.SearchResponse {
-	var scraperResp *entity.ScrapeResponse
+	var fetchResp *entity.PageRankerResponse
 	elapsedTime := timedEvent(func() {
-		scraperResp = s.scraperClient.Scrape(query)
+		fetchResp = s.scraperClient.Fetch(query)
 	})
 
 	searchTerms := extractSearchTerms(query)
 
 	// perhaps we could move this into a converter
-	results := make([]entity.SearchResult, len(scraperResp.Results))
-	for i, result := range scraperResp.Results {
+	results := make([]entity.SearchResult, len(fetchResp.Results))
+	for i, result := range fetchResp.Results {
 		converted := conv.ToSearchResult(result)
 		emphasized := conv.EmphasizeSnippetSearchTerms(searchTerms, converted)
 		results[i] = emphasized
