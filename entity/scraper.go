@@ -1,16 +1,20 @@
 package entity
 
-type ScrapeRequest struct {
+type PageRankerRequest struct {
 	Query string `json:"query"`
 }
 
-type ScrapeResult struct {
+type RankedResultData struct {
 	Title   string `json:"title"`
 	Href    string `json:"href"`
 	Snippet string `json:"snippet"`
 }
 
-type ScrapeResponse struct {
-	OriginalQuery string         `json:"originalQuery"`
-	Results       []ScrapeResult `json:"results"`
+type RankedSearchResult struct {
+	Result RankedResultData `json:"result"`
+	Score  int              `json:"score"`
+}
+
+type PageRankerResponse struct {
+	Results []RankedSearchResult `json:"results"`
 }
