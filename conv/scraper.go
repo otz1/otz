@@ -2,8 +2,9 @@ package conv
 
 import (
 	"fmt"
-	"github.com/otz1/otz/entity"
 	"strings"
+
+	"github.com/otz1/otz/entity"
 )
 
 // rule of thumb is that we name
@@ -12,10 +13,6 @@ import (
 // are converting from is the scraper client.
 
 func EmphasizeSnippetSearchTerms(searchTerms []string, sr entity.SearchResult) entity.SearchResult {
-
-	// TODO we could pre-allocate here because it will always
-	// be searchTerms * 2.
-
 	var replacementSet []string
 	for _, st := range searchTerms {
 		if len(st) < 2 {
